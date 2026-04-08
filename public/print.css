@@ -1,0 +1,205 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    background: radial-gradient(circle at top, #2a2331 0%, #161217 52%, #0d0b10 100%);
+    color: #f2ece7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    overflow-y: auto;
+}
+
+.print-card {
+    width: 100%;
+    max-width: 760px;
+    text-align: center;
+    background: rgba(24, 20, 28, 0.94);
+    border-radius: 24px;
+    padding: 44px 34px 38px;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+    border: 1px solid rgba(212, 175, 159, 0.14);
+}
+
+.icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 14px;
+    color: #f3d6c7;
+    opacity: 0.95;
+}
+
+.heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.45rem;
+    letter-spacing: 0.4rem;
+    text-transform: uppercase;
+    color: #f2ece7;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.brand-line {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    line-height: 1;
+    color: #f3d6c7;
+    margin-bottom: 18px;
+    font-weight: 700;
+}
+
+.brand-line .script {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 600;
+    color: #fff5ef;
+    letter-spacing: 0.02em;
+}
+
+.lead {
+    font-family: 'Lato', sans-serif;
+    font-size: 1.05rem;
+    letter-spacing: 0.12rem;
+    text-transform: uppercase;
+    color: #d9b08c;
+    margin-bottom: 28px;
+    font-weight: 400;
+}
+
+.qr-frame {
+    display: inline-block;
+    padding: 18px;
+    border: 1px solid rgba(243, 214, 199, 0.18);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+}
+
+.qr-frame img {
+    display: block;
+    width: 420px;
+    height: 420px;
+    max-width: 80vw;
+    max-height: 80vw;
+}
+
+.footer-copy {
+    margin-top: 22px;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: #c2b8b3;
+    text-transform: uppercase;
+    letter-spacing: 0.09rem;
+}
+
+.names {
+    margin-top: 14px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.55rem;
+    letter-spacing: 0.18rem;
+    color: #f3d6c7;
+    text-transform: uppercase;
+}
+
+.date {
+    margin-top: 8px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    letter-spacing: 0.16rem;
+    color: #d9b08c;
+}
+
+@media print {
+    body {
+        min-height: auto;
+        padding: 0;
+        background: white;
+        color: black;
+    }
+
+    .print-card {
+        max-width: none;
+        box-shadow: none;
+        border: none;
+        background: white;
+        padding: 0;
+    }
+
+    .heading,
+    .brand-line,
+    .lead,
+    .footer-copy,
+    .names,
+    .date {
+        color: black;
+    }
+}
+
+@media (max-width: 768px) {
+    .print-card {
+        padding: 34px 22px 30px;
+    }
+
+    .heading {
+        font-size: 1.2rem;
+    }
+
+    .qr-frame img {
+        width: 340px;
+        height: 340px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 16px;
+    }
+
+    .print-card {
+        padding: 26px 16px 22px;
+        border-radius: 20px;
+    }
+
+    .heading {
+        font-size: 1rem;
+        letter-spacing: 0.28rem;
+    }
+
+    .brand-line {
+        font-size: 2.1rem;
+    }
+
+    .lead {
+        font-size: 0.9rem;
+        margin-bottom: 22px;
+    }
+
+    .qr-frame {
+        padding: 14px;
+    }
+
+    .qr-frame img {
+        width: 280px;
+        height: 280px;
+    }
+
+    .names {
+        font-size: 1.25rem;
+    }
+
+    .date {
+        font-size: 1.05rem;
+    }
+}
