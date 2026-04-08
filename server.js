@@ -216,20 +216,44 @@ app.post('/api/upload', upload.array('photos', 50), async (req, res) => {
 
 /**
  * GET /auth/status
- * Returns authentication status
- * Useful for frontend to check if Google auth is configured
+ * Returns authentication status and validates token refresh flow.
  */
-app.get('/api/auth/status', (req, res) => {
+app.get('/api/auth/status', async (req, res) => {
     const hasRefreshToken = !!process.env.GOOGLE_REFRESH_TOKEN;
     const hasClientId = !!process.env.GOOGLE_CLIENT_ID;
     const hasClientSecret = !!process.env.GOOGLE_CLIENT_SECRET;
+    const hasRequiredConfig = hasRefreshToken && hasClientId && hasClientSecret;
 
-    res.json({
-        authenticated: hasRefreshToken && hasClientId && hasClientSecret,
-        hasRefreshToken,
-        hasClientId,
-        hasClientSecret
-    });
+    if (!hasRequiredConfig) {
+        return res.json({
+            authenticated: false,
+            tokenValid: false,
+            hasRefreshToken,
+            hasClientId,
+            hasClientSecret,
+            message: 'Missing one or more required Google environment variables.'
+        });
+    }
+
+    try {
+        await getAccessToken();
+        return res.json({
+            authenticated: true,
+            tokenValid: true,
+            hasRefreshToken,
+            hasClientId,
+            hasClientSecret
+        });
+    } catch (error) {
+        return res.status(401).json({
+            authenticated: false,
+            tokenValid: false,
+            hasRefreshToken,
+            hasClientId,
+            hasClientSecret,
+            message: 'Google refresh token is invalid or expired. Generate a new token with node auth.js and update Vercel env vars.'
+        });
+    }
 });
 
 /**
