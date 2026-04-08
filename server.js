@@ -33,7 +33,15 @@ const upload = multer({
     },
     fileFilter: (req, file, cb) => {
         // Validate file type
-        const allowedMimes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+        const allowedMimes = [
+            'image/jpeg',
+            'image/jpg',
+            'image/png',
+            'image/webp',
+            'image/gif',
+            'image/heic',
+            'image/heif'
+        ];
         if (allowedMimes.includes(file.mimetype)) {
             cb(null, true);
         } else {
@@ -338,7 +346,7 @@ app.use((error, req, res, next) => {
     if (error.message && error.message.includes('Invalid file type')) {
         return res.status(400).json({
             success: false,
-            message: error.message
+            message: 'Unsupported image format. Please use JPG, PNG, WEBP, GIF, HEIC, or HEIF.'
         });
     }
 
