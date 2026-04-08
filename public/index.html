@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slaviša i Ana - Fotografije sa venčanja</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== CSS Reset & Base Styles ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background: linear-gradient(135deg, #faf8f3 0%, #f5ede4 100%);
+            color: #3d3d3d;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        /* ===== Container ===== */
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            margin: 0 auto;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== Hero Section ===== */
+        .hero {
+            text-align: center;
+            margin-bottom: 34px;
+            border-bottom: 2px solid #f0d9ce;
+            padding-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            color: #8b6f5e;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .hero .ring {
+            font-size: 1.5rem;
+            margin: 0 8px;
+            display: inline-block;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(10deg); }
+        }
+
+        .hero .date {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            color: #c9a884;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            color: #888;
+            font-weight: 300;
+            margin-bottom: 5px;
+        }
+
+        /* ===== QR Code Section ===== */
+        .qr-section {
+            background: #faf8f3;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 2px solid #f0d9ce;
+        }
+
+        .qr-section h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            color: #8b6f5e;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .qr-code-container {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .qr-code-container img {
+            width: 200px;
+            height: 200px;
+            display: block;
+        }
+
+        .download-qr-btn {
+            background: linear-gradient(135deg, #d4af9f 0%, #c9a884 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .download-qr-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(212, 175, 159, 0.3);
+        }
+
+        .download-qr-btn:active {
+            transform: translateY(0);
+        }
+
+        /* ===== Upload Section ===== */
+        .upload-section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            color: #8b6f5e;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .upload-zone {
+            border: 3px dashed #d4af9f;
+            border-radius: 15px;
+            padding: 50px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fef9f5;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-zone:hover {
+            border-color: #c9a884;
+            background: #faf8f3;
+            transform: translateY(-2px);
+        }
+
+        .upload-zone.dragover {
+            border-color: #8b6f5e;
+            background: #f5ede4;
+            box-shadow: 0 10px 30px rgba(139, 111, 94, 0.15);
+        }
+
+        .upload-zone-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .upload-zone-text h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            color: #8b6f5e;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .upload-zone-text p {
+            color: #999;
+            font-size: 0.95rem;
+        }
+
+        .upload-input {
+            display: none;
+        }
+
+        /* ===== File List ===== */
+        .file-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 15px;
+            background: #faf8f3;
+            border-radius: 10px;
+            border: 1px solid #f0d9ce;
+        }
+
+        .file-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            animation: scaleIn 0.3s ease;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .file-item img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .file-item-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            padding: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .file-item:hover .file-item-overlay {
+            opacity: 1;
+        }
+
+        .file-size {
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .remove-file {
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            transition: background 0.2s ease;
+        }
+
+        .remove-file:hover {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        /* ===== Progress Bar ===== */
+        .upload-progress {
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .upload-progress.active {
+            display: block;
+        }
+
+        .progress-item {
+            margin-bottom: 12px;
+        }
+
+        .progress-item-name {
+            font-size: 0.9rem;
+            color: #3d3d3d;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .progress-item-bar {
+            width: 100%;
+            height: 6px;
+            background: #e8d9ce;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-item-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #d4af9f 0%, #c9a884 100%);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.2s ease;
+            box-shadow: 0 0 10px rgba(212, 175, 159, 0.5);
+        }
+
+        /* ===== Buttons ===== */
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Lato', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #d4af9f 0%, #c9a884 100%);
+            color: white;
+            box-shadow: 0 5px 20px rgba(212, 175, 159, 0.3);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(212, 175, 159, 0.4);
+        }
+
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: #f0d9ce;
+            color: #8b6f5e;
+            border: 2px solid #d4af9f;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #e8d0c4;
+            transform: translateY(-2px);
+        }
+
+        /* ===== Success Screen ===== */
+        .success-screen {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .success-screen.show {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: successBounce 0.6s ease;
+        }
+
+        @keyframes successBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .success-screen h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            color: #8b6f5e;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .success-screen p {
+            color: #888;
+            margin-bottom: 30px;
+            font-size: 1.05rem;
+        }
+
+        /* ===== Error Message ===== */
+        .error-message {
+            background: #fdd7d7;
+            border-left: 4px solid #e74c3c;
+            color: #c0392b;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== Info Message ===== */
+        .info-message {
+            background: #d4f1f9;
+            border-left: 4px solid #3498db;
+            color: #1e5a7a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 0.95rem;
+        }
+
+        .info-message.show {
+            display: block;
+        }
+
+        /* ===== Confetti Animation ===== */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #d4af9f;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* ===== Mobile Responsive ===== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+                border-radius: 15px;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero .date {
+                font-size: 1.1rem;
+            }
+
+            .upload-zone {
+                padding: 40px 20px;
+            }
+
+            .upload-zone-icon {
+                font-size: 2.5rem;
+            }
+
+            .file-list {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 10px;
+                padding: 10px;
+            }
+
+            .file-item img {
+                height: 100px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                padding: 12px 16px;
+                font-size: 0.95rem;
+            }
+
+            .qr-code-container img {
+                width: 160px;
+                height: 160px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .hero .date {
+                font-size: 1rem;
+            }
+
+            .hero p {
+                font-size: 0.9rem;
+            }
+
+            .qr-section {
+                padding: 15px;
+            }
+
+            .qr-section h3 {
+                font-size: 1rem;
+            }
+
+            .qr-code-container img {
+                width: 140px;
+                height: 140px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ===== Hero Section ===== -->
+        <div class="hero">
+            <h1>Slaviša <span class="ring">💍</span> Ana</h1>
+            <div class="date">23. Maj 2025</div>
+            <p>Podelite sa nama svoje najlepše trenutke</p>
+        </div>
+
+        <!-- ===== QR Code Section ===== -->
+        <div class="qr-section">
+            <h3>📱 Skenirajte za slanje sa drugog uređaja</h3>
+            <div class="qr-code-container">
+                <img id="qrCode" src="" alt="QR kod" />
+            </div>
+            <button class="download-qr-btn" onclick="downloadQRCode()">📥 Preuzmi QR kod</button>
+        </div>
+
+        <!-- ===== Messages ===== -->
+        <div class="error-message" id="errorMessage"></div>
+        <div class="info-message" id="infoMessage"></div>
+
+        <!-- ===== Upload Section ===== -->
+        <div class="upload-section" id="uploadSection">
+            <h2>📸 Otpremite svoje fotografije</h2>
+
+            <!-- Upload Zone -->
+            <div class="upload-zone" id="uploadZone" onclick="document.getElementById('uploadInput').click()">
+                <span class="upload-zone-icon">📷</span>
+                <div class="upload-zone-text">
+                    <h3>Kliknite ili prevucite fotografije ovde</h3>
+                    <p>JPG, PNG, WEBP do 20 MB po fajlu</p>
+                </div>
+            </div>
+
+            <!-- File Input -->
+            <input type="file" id="uploadInput" class="upload-input" accept="image/*" multiple />
+
+            <!-- File List -->
+            <div class="file-list" id="fileList"></div>
+
+            <!-- Progress Bar -->
+            <div class="upload-progress" id="uploadProgress"></div>
+
+            <!-- Buttons -->
+            <div class="button-group">
+                <button class="btn btn-secondary" id="clearBtn" onclick="clearFiles()">Obriši sve</button>
+                <button class="btn btn-primary" id="uploadBtn" onclick="uploadFiles()" disabled>Otpremi u album</button>
+            </div>
+        </div>
+
+        <!-- ===== Success Screen ===== -->
+        <div class="success-screen" id="successScreen">
+            <div class="success-icon">✨</div>
+            <h2>Hvala vam!</h2>
+            <p>Vaše fotografije su uspešno otpremljene u naš album sa venčanja!</p>
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="resetForMore()">Otpremite još fotografija</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== State Management =====
+        let selectedFiles = [];
+        let sessionToken = '';
+        let siteUrl = window.location.origin;
+
+        // ===== Initialize on Page Load =====
+        document.addEventListener('DOMContentLoaded', async function() {
+            await loadRuntimeConfig();
+            generateSessionToken();
+            setupDragAndDrop();
+            setupFileInput();
+        });
+
+        // ===== Load Runtime Config =====
+        async function loadRuntimeConfig() {
+            try {
+                const response = await fetch('/api/config');
+                if (!response.ok) {
+                    return;
+                }
+
+                const config = await response.json();
+                if (config.siteUrl) {
+                    siteUrl = config.siteUrl.replace(/\/$/, '');
+                }
+            } catch (error) {
+                // Fallback to current origin when API config is unavailable.
+                siteUrl = window.location.origin;
+            }
+        }
+
+        // ===== Generate Unique Session Token (UUID) =====
+        function generateSessionToken() {
+            const params = new URLSearchParams(window.location.search);
+            const existingSession = params.get('session');
+            sessionToken = existingSession || generateUUID();
+            generateQRCode();
+        }
+
+        // ===== UUID Generator =====
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0;
+                const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        // ===== Generate QR Code =====
+        function generateQRCode() {
+            const qrUrl = `${siteUrl}?session=${sessionToken}`;
+            const encodedUrl = encodeURIComponent(qrUrl);
+            const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodedUrl}`;
+            
+            const qrCodeImg = document.getElementById('qrCode');
+            qrCodeImg.src = qrApiUrl;
+            qrCodeImg.dataset.qrUrl = qrUrl;
+        }
+
+        // ===== Download QR Code =====
+        function downloadQRCode() {
+            const qrCodeImg = document.getElementById('qrCode');
+            const link = document.createElement('a');
+            link.href = qrCodeImg.src;
+            link.download = `wedding-qr-${sessionToken}.png`;
+            link.click();
+        }
+
+        // ===== Setup Drag & Drop =====
+        function setupDragAndDrop() {
+            const uploadZone = document.getElementById('uploadZone');
+
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadZone.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadZone.addEventListener(eventName, () => {
+                    uploadZone.classList.add('dragover');
+                });
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadZone.addEventListener(eventName, () => {
+                    uploadZone.classList.remove('dragover');
+                });
+            });
+
+            uploadZone.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                handleFiles(files);
+            });
+        }
+
+        // ===== Setup File Input =====
+        function setupFileInput() {
+            const fileInput = document.getElementById('uploadInput');
+            fileInput.addEventListener('change', (e) => {
+                handleFiles(e.target.files);
+            });
+        }
+
+        // ===== Obrada izabranih fajlova =====
+        function handleFiles(files) {
+            const newFiles = Array.from(files).filter(file => {
+                if (!file.type.startsWith('image/')) {
+                    showError(`${file.name} nije slikovni fajl`);
+                    return false;
+                }
+                if (file.size > 20 * 1024 * 1024) {
+                    showError(`${file.name} je veći od 20 MB`);
+                    return false;
+                }
+                return true;
+            });
+
+            selectedFiles = [...selectedFiles, ...newFiles];
+            renderFileList();
+            updateUploadButton();
+        }
+
+        // ===== Prikaz liste fajlova =====
+        function renderFileList() {
+            const fileList = document.getElementById('fileList');
+
+            if (selectedFiles.length === 0) {
+                fileList.innerHTML = '';
+                return;
+            }
+
+            fileList.innerHTML = selectedFiles.map((file, index) => {
+                const reader = new FileReader();
+                const preview = document.createElement('img');
+
+                reader.onload = (e) => {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+
+                const size = (file.size / 1024 / 1024).toFixed(2);
+
+                return `
+                    <div class="file-item">
+                        <img data-index="${index}" src="" alt="Pregled slike" />
+                        <div class="file-item-overlay">
+                            <span class="file-size">${size}MB</span>
+                            <button class="remove-file" onclick="removeFile(${index})">×</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Učitavanje pregleda
+            selectedFiles.forEach((file, index) => {
+                const reader = new FileReader();
+                const preview = document.querySelector(`img[data-index="${index}"]`);
+                
+                reader.onload = (e) => {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // ===== Uklanjanje fajla =====
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            renderFileList();
+            updateUploadButton();
+        }
+
+        // ===== Brisanje svih fajlova =====
+        function clearFiles() {
+            selectedFiles = [];
+            document.getElementById('uploadInput').value = '';
+            renderFileList();
+            updateUploadButton();
+        }
+
+        // ===== Ažuriranje stanja dugmeta za otpremanje =====
+        function updateUploadButton() {
+            const uploadBtn = document.getElementById('uploadBtn');
+            uploadBtn.disabled = selectedFiles.length === 0;
+        }
+
+        // ===== Otpremanje fajlova =====
+        async function uploadFiles() {
+            if (selectedFiles.length === 0) {
+                showError('Izaberite bar jednu fotografiju');
+                return;
+            }
+
+            const uploadBtn = document.getElementById('uploadBtn');
+            uploadBtn.disabled = true;
+
+            const progressContainer = document.getElementById('uploadProgress');
+            progressContainer.classList.add('active');
+            progressContainer.innerHTML = '';
+
+            // Kreiranje FormData
+            const formData = new FormData();
+            selectedFiles.forEach(file => {
+                formData.append('photos', file);
+            });
+
+            // Kreiranje pratilaca napretka
+            const progressTrackers = selectedFiles.map((file, index) => ({
+                index,
+                name: file.name,
+                loaded: 0,
+                total: file.size
+            }));
+
+            // Prikaz traka napretka
+            renderProgressBars(progressTrackers);
+
+            try {
+                // Otpremanje uz praćenje napretka
+                const xhr = new XMLHttpRequest();
+
+                xhr.upload.addEventListener('progress', (e) => {
+                    if (e.lengthComputable) {
+                        const percentComplete = (e.loaded / e.total) * 100;
+                        updateProgressBars(percentComplete, progressTrackers);
+                    }
+                });
+
+                xhr.addEventListener('load', () => {
+                    if (xhr.status === 200 || xhr.status === 201) {
+                        const response = JSON.parse(xhr.responseText);
+                        
+                        if (response.success) {
+                            showSuccess(`${response.uploaded} fotografija je uspešno otpremljeno!`);
+                            setTimeout(() => {
+                                showSuccessScreen();
+                                clearFiles();
+                                uploadBtn.disabled = false;
+                            }, 500);
+                        } else {
+                            showError(response.message || 'Otpremanje nije uspelo');
+                            uploadBtn.disabled = false;
+                            progressContainer.classList.remove('active');
+                        }
+                    } else {
+                        showError('Otpremanje nije uspelo. Pokušajte ponovo.');
+                        uploadBtn.disabled = false;
+                        progressContainer.classList.remove('active');
+                    }
+                });
+
+                xhr.addEventListener('error', () => {
+                    showError('Greška u mreži tokom otpremanja');
+                    uploadBtn.disabled = false;
+                    progressContainer.classList.remove('active');
+                });
+
+                xhr.open('POST', '/api/upload');
+                xhr.send(formData);
+
+            } catch (error) {
+                showError(`Otpremanje nije uspelo: ${error.message}`);
+                uploadBtn.disabled = false;
+                progressContainer.classList.remove('active');
+            }
+        }
+
+        // ===== Render Progress Bars =====
+        function renderProgressBars(trackers) {
+            const progressContainer = document.getElementById('uploadProgress');
+            progressContainer.innerHTML = trackers.map(tracker => `
+                <div class="progress-item">
+                    <div class="progress-item-name">
+                        <span>${tracker.name}</span>
+                        <span id="progress-percent-${tracker.index}">0%</span>
+                    </div>
+                    <div class="progress-item-bar">
+                        <div class="progress-item-fill" id="progress-fill-${tracker.index}" style="width: 0%"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ===== Update Progress Bars =====
+        function updateProgressBars(percentComplete, trackers) {
+            trackers.forEach((tracker, index) => {
+                const fillEl = document.getElementById(`progress-fill-${tracker.index}`);
+                const percentEl = document.getElementById(`progress-percent-${tracker.index}`);
+                
+                if (fillEl) {
+                    fillEl.style.width = percentComplete + '%';
+                    percentEl.textContent = Math.round(percentComplete) + '%';
+                }
+            });
+        }
+
+        // ===== Show Error Message =====
+        function showError(message) {
+            const errorEl = document.getElementById('errorMessage');
+            errorEl.textContent = message;
+            errorEl.classList.add('show');
+
+            setTimeout(() => {
+                errorEl.classList.remove('show');
+            }, 5000);
+        }
+
+        // ===== Show Info Message =====
+        function showInfo(message) {
+            const infoEl = document.getElementById('infoMessage');
+            infoEl.textContent = message;
+            infoEl.classList.add('show');
+
+            setTimeout(() => {
+                infoEl.classList.remove('show');
+            }, 5000);
+        }
+
+        // ===== Show Success Message =====
+        function showSuccess(message) {
+            showInfo(message);
+            createConfetti();
+        }
+
+        // ===== Show Success Screen =====
+        function showSuccessScreen() {
+            document.getElementById('uploadSection').style.display = 'none';
+            document.getElementById('successScreen').classList.add('show');
+        }
+
+        // ===== Reset for More Uploads =====
+        function resetForMore() {
+            document.getElementById('uploadSection').style.display = 'block';
+            document.getElementById('successScreen').classList.remove('show');
+            generateSessionToken();
+        }
+
+        // ===== Confetti Animation =====
+        function createConfetti() {
+            const colors = ['#d4af9f', '#c9a884', '#8b6f5e', '#f0d9ce'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * window.innerWidth + 'px';
+                confetti.style.top = '-10px';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.opacity = Math.random();
+                
+                document.body.appendChild(confetti);
+
+                const duration = Math.random() * 2 + 2;
+                const keyframes = `
+                    @keyframes fall-${i} {
+                        to {
+                            transform: translateY(${window.innerHeight}px) rotateZ(${Math.random() * 360}deg);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                
+                const style = document.createElement('style');
+                style.textContent = keyframes;
+                document.head.appendChild(style);
+
+                confetti.style.animation = `fall-${i} ${duration}s linear forwards`;
+
+                setTimeout(() => {
+                    confetti.remove();
+                }, duration * 1000);
+            }
+        }
+    </script>
+</body>
+</html>
