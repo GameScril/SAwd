@@ -15,6 +15,7 @@ const path = require('path');
 const readline = require('readline');
 const https = require('https');
 const { exec } = require('child_process');
+const heicConvert = require('heic-convert');
 require('dotenv').config();
 
 // ===== Constants =====
@@ -32,6 +33,39 @@ const TOKEN_PATH = path.join(__dirname, '.env');
 function normalizeEnvValue(value) {
     if (typeof value !== 'string') return '';
     return value.trim().replace(/^['\"]|['\"]$/g, '');
+}
+
+function isHeicLikeFile(file) {
+    const mimetype = (file.mimetype || '').toLowerCase();
+    const originalname = (file.originalname || '').toLowerCase();
+
+    return (
+        mimetype === 'image/heic' ||
+        mimetype === 'image/heif' ||
+        originalname.endsWith('.heic') ||
+        originalname.endsWith('.heif')
+    );
+}
+
+async function normalizeUploadFile(file) {
+    if (!isHeicLikeFile(file)) {
+        return file;
+    }
+
+    const convertedBuffer = await heicConvert({
+        buffer: file.buffer,
+        format: 'JPEG',
+        quality: 1
+    });
+
+    const baseName = path.parse(file.originalname || 'photo').name || 'photo';
+
+    return {
+        ...file,
+        buffer: convertedBuffer,
+        mimetype: 'image/jpeg',
+        originalname: `${baseName}.jpg`
+    };
 }
 
 /**
@@ -290,8 +324,14 @@ async function uploadPhotosToAlbum(files) {
             try {
                 console.log(`📤 Uploading: ${file.originalname}`);
 
+                const uploadFile = await normalizeUploadFile(file);
+
+                if (uploadFile !== file) {
+                    console.log(`   ↳ Converted iPhone HEIC/HEIF to JPEG: ${uploadFile.originalname}`);
+                }
+
                 // Step 1: Upload file bytes to get upload token
-                const uploadToken = await uploadBytes(accessToken, file);
+                const uploadToken = await uploadBytes(accessToken, uploadFile);
 
                 if (!uploadToken) {
                     throw new Error('No upload token received from Google');
