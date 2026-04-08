@@ -16,7 +16,7 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
-const { getAccessToken, uploadPhotosToAlbum } = require('./auth');
+const { getAccessToken, getAuthorizationUrl, uploadPhotosToAlbum } = require('./auth');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -50,6 +50,23 @@ const upload = multer({
  */
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+/**
+ * GET /auth/start
+ * Starts OAuth flow from deployed app.
+ */
+app.get('/auth/start', (req, res) => {
+    try {
+        const authUrl = getAuthorizationUrl();
+        return res.redirect(authUrl);
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: 'Failed to generate Google auth URL',
+            error: error.message
+        });
+    }
 });
 
 /**
@@ -93,26 +110,61 @@ app.get('/auth/callback', async (req, res) => {
 
         const { tokens } = await oauth2Client.getToken(code);
 
-        // Save refresh token to .env
+        // Save refresh token to .env for local dev.
+        // On Vercel, show token so user can copy it into Environment Variables.
         if (tokens.refresh_token) {
-            const envPath = path.join(__dirname, '.env');
-            let envContent = fs.readFileSync(envPath, 'utf8');
-            
-            // Update or add GOOGLE_REFRESH_TOKEN
-            if (envContent.includes('GOOGLE_REFRESH_TOKEN=')) {
-                envContent = envContent.replace(
-                    /GOOGLE_REFRESH_TOKEN=.*/,
-                    `GOOGLE_REFRESH_TOKEN=${tokens.refresh_token}`
-                );
+            if (process.env.VERCEL) {
+                return res.send(`
+            <html>
+                <head><title>Refresh Token Generated</title></head>
+                <body style="font-family: sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 24px; background: #faf8f5;">
+                    <div style="width: 100%; max-width: 760px; background: white; border-radius: 14px; padding: 24px; box-shadow: 0 8px 30px rgba(0,0,0,0.08);">
+                        <h1 style="margin-top:0;">✅ New Refresh Token Generated</h1>
+                        <p>Copy this token and paste it into Vercel Environment Variable <strong>GOOGLE_REFRESH_TOKEN</strong>.</p>
+                        <textarea readonly style="width:100%; min-height:120px; font-family: monospace; font-size: 13px; padding: 10px;">${tokens.refresh_token}</textarea>
+                        <ol>
+                            <li>Vercel -> Project Settings -> Environment Variables</li>
+                            <li>Update <strong>GOOGLE_REFRESH_TOKEN</strong></li>
+                            <li>Redeploy your project</li>
+                        </ol>
+                        <p style="margin-bottom:0;"><a href="/" style="color:#a06a4b; font-weight:bold;">Return to Wedding Photos</a></p>
+                    </div>
+                </body>
+            </html>
+                `);
             } else {
-                envContent += `\nGOOGLE_REFRESH_TOKEN=${tokens.refresh_token}`;
+                const envPath = path.join(__dirname, '.env');
+                let envContent = fs.readFileSync(envPath, 'utf8');
+
+                // Update or add GOOGLE_REFRESH_TOKEN
+                if (envContent.includes('GOOGLE_REFRESH_TOKEN=')) {
+                    envContent = envContent.replace(
+                        /GOOGLE_REFRESH_TOKEN=.*/,
+                        `GOOGLE_REFRESH_TOKEN=${tokens.refresh_token}`
+                    );
+                } else {
+                    envContent += `\nGOOGLE_REFRESH_TOKEN=${tokens.refresh_token}`;
+                }
+
+                fs.writeFileSync(envPath, envContent);
+
+                // Reload environment variables
+                delete require.cache[require.resolve('dotenv')];
+                require('dotenv').config();
             }
-            
-            fs.writeFileSync(envPath, envContent);
-            
-            // Reload environment variables
-            delete require.cache[require.resolve('dotenv')];
-            require('dotenv').config();
+        } else if (process.env.VERCEL) {
+            return res.status(400).send(`
+            <html>
+                <head><title>No Refresh Token Returned</title></head>
+                <body style="font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0;">
+                    <div style="text-align: center; max-width: 700px;">
+                        <h1>⚠️ Google did not return a refresh token</h1>
+                        <p>This usually means the account already granted consent before.</p>
+                        <p>Try again with forced consent via <a href="/auth/start">/auth/start</a>, or revoke app access in your Google Account and repeat.</p>
+                    </div>
+                </body>
+            </html>
+            `);
         }
 
         return res.send(`
