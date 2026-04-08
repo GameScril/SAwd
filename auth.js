@@ -216,9 +216,11 @@ async function getAccessToken() {
  */
 async function getOrCreateAlbum(accessToken) {
     try {
-        if (process.env.GOOGLE_ALBUM_ID) {
-            console.log(`✅ Using cached album: ${ALBUM_NAME} (${process.env.GOOGLE_ALBUM_ID})`);
-            return process.env.GOOGLE_ALBUM_ID;
+        const cachedAlbumId = normalizeEnvValue(process.env.GOOGLE_ALBUM_ID);
+
+        if (cachedAlbumId) {
+            console.log(`✅ Using cached album: ${ALBUM_NAME} (${cachedAlbumId})`);
+            return cachedAlbumId;
         }
 
         // List existing albums
@@ -233,17 +235,21 @@ async function getOrCreateAlbum(accessToken) {
         const albumId = createResponse.id;
         console.log(`✅ Album created: ${albumId}`);
 
-        const envPath = path.join(__dirname, '.env');
-        let envContent = fs.readFileSync(envPath, 'utf8');
+        if (!process.env.VERCEL) {
+            const envPath = path.join(__dirname, '.env');
+            let envContent = fs.readFileSync(envPath, 'utf8');
 
-        if (envContent.includes('GOOGLE_ALBUM_ID=')) {
-            envContent = envContent.replace(/GOOGLE_ALBUM_ID=.*/, `GOOGLE_ALBUM_ID=${albumId}`);
+            if (envContent.includes('GOOGLE_ALBUM_ID=')) {
+                envContent = envContent.replace(/GOOGLE_ALBUM_ID=.*/, `GOOGLE_ALBUM_ID=${albumId}`);
+            } else {
+                envContent += `\nGOOGLE_ALBUM_ID=${albumId}`;
+            }
+
+            fs.writeFileSync(envPath, envContent);
+            process.env.GOOGLE_ALBUM_ID = albumId;
         } else {
-            envContent += `\nGOOGLE_ALBUM_ID=${albumId}`;
+            console.log('ℹ️ Running on Vercel; skipping .env write. Add GOOGLE_ALBUM_ID to Vercel env vars to persist this album ID.');
         }
-
-        fs.writeFileSync(envPath, envContent);
-        process.env.GOOGLE_ALBUM_ID = albumId;
 
         return albumId;
 
