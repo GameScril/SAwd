@@ -16,7 +16,7 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
-const { getAccessToken, getAuthorizationUrl, uploadPhotosToAlbum } = require('./auth');
+const { getAccessToken, getAuthorizationUrl, getOAuth2Client, uploadPhotosToAlbum } = require('./auth');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -101,12 +101,7 @@ app.get('/auth/callback', async (req, res) => {
 
     try {
         // Exchange authorization code for tokens
-        const { google } = require('googleapis');
-        const oauth2Client = new google.auth.OAuth2(
-            process.env.GOOGLE_CLIENT_ID,
-            process.env.GOOGLE_CLIENT_SECRET,
-            process.env.GOOGLE_REDIRECT_URI
-        );
+        const oauth2Client = getOAuth2Client();
 
         const { tokens } = await oauth2Client.getToken(code);
 
