@@ -26,6 +26,15 @@ const ALBUM_NAME = 'Slaviša & Ana Wedding';
 const TOKEN_PATH = path.join(__dirname, '.env');
 
 /**
+ * Normalize env values copied from dashboards/CLI.
+ * Removes surrounding quotes and trims whitespace/newlines.
+ */
+function normalizeEnvValue(value) {
+    if (typeof value !== 'string') return '';
+    return value.trim().replace(/^['\"]|['\"]$/g, '');
+}
+
+/**
  * Upload raw image bytes to Google Photos and return upload token.
  * This endpoint is separate from the discovery-based Photos API methods.
  *
@@ -142,10 +151,14 @@ function requestJson(accessToken, method, requestPath, body = null) {
  * @returns {google.auth.OAuth2} Configured OAuth2 client
  */
 function getOAuth2Client() {
+    const clientId = normalizeEnvValue(process.env.GOOGLE_CLIENT_ID);
+    const clientSecret = normalizeEnvValue(process.env.GOOGLE_CLIENT_SECRET);
+    const redirectUri = normalizeEnvValue(process.env.GOOGLE_REDIRECT_URI);
+
     return new google.auth.OAuth2(
-        process.env.GOOGLE_CLIENT_ID,
-        process.env.GOOGLE_CLIENT_SECRET,
-        process.env.GOOGLE_REDIRECT_URI
+        clientId,
+        clientSecret,
+        redirectUri
     );
 }
 
