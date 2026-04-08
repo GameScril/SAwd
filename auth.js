@@ -15,6 +15,7 @@ const path = require('path');
 const readline = require('readline');
 const https = require('https');
 const { exec } = require('child_process');
+const sharp = require('sharp');
 const heicConvert = require('heic-convert');
 require('dotenv').config();
 
@@ -52,20 +53,43 @@ async function normalizeUploadFile(file) {
         return file;
     }
 
-    const convertedBuffer = await heicConvert({
-        buffer: file.buffer,
-        format: 'JPEG',
-        quality: 1
-    });
+    try {
+        const convertedBuffer = await sharp(file.buffer)
+            .rotate()
+            .jpeg({ quality: 90, mozjpeg: true })
+            .toBuffer();
 
-    const baseName = path.parse(file.originalname || 'photo').name || 'photo';
+        const baseName = path.parse(file.originalname || 'photo').name || 'photo';
 
-    return {
-        ...file,
-        buffer: convertedBuffer,
-        mimetype: 'image/jpeg',
-        originalname: `${baseName}.jpg`
-    };
+        return {
+            ...file,
+            buffer: convertedBuffer,
+            mimetype: 'image/jpeg',
+            originalname: `${baseName}.jpg`
+        };
+    } catch (error) {
+        console.warn(`Sharp conversion failed for ${file.originalname}: ${error.message}`);
+
+        try {
+            const convertedBuffer = await heicConvert({
+                buffer: file.buffer,
+                format: 'JPEG',
+                quality: 1
+            });
+
+            const baseName = path.parse(file.originalname || 'photo').name || 'photo';
+
+            return {
+                ...file,
+                buffer: convertedBuffer,
+                mimetype: 'image/jpeg',
+                originalname: `${baseName}.jpg`
+            };
+        } catch (fallbackError) {
+            console.warn(`HEIC fallback conversion failed for ${file.originalname}: ${fallbackError.message}`);
+            return file;
+        }
+    }
 }
 
 /**
