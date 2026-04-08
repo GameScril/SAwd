@@ -522,7 +522,7 @@
                 <span class="upload-zone-icon">📷</span>
                 <div class="upload-zone-text">
                     <h3>Kliknite ili prevucite fotografije ovde</h3>
-                    <p>JPG, PNG, WEBP do 20 MB po fajlu</p>
+                    <p>JPG, PNG, WEBP, HEIC, HEIF do 20 MB po fajlu</p>
                 </div>
             </div>
 
@@ -671,14 +671,6 @@
             }
 
             fileList.innerHTML = selectedFiles.map((file, index) => {
-                const reader = new FileReader();
-                const preview = document.createElement('img');
-
-                reader.onload = (e) => {
-                    preview.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-
                 const size = (file.size / 1024 / 1024).toFixed(2);
 
                 return `
