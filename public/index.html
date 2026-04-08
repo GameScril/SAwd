@@ -19,8 +19,8 @@
 
         body {
             font-family: 'Lato', sans-serif;
-            background: linear-gradient(135deg, #faf8f3 0%, #f5ede4 100%);
-            color: #3d3d3d;
+            background: radial-gradient(circle at top, #2a2331 0%, #161217 52%, #0d0b10 100%);
+            color: #f2ece7;
             line-height: 1.6;
             min-height: 100vh;
             display: flex;
@@ -32,9 +32,10 @@
 
         /* ===== Container ===== */
         .container {
-            background: white;
+            background: rgba(24, 20, 28, 0.94);
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+            border: 1px solid rgba(212, 175, 159, 0.14);
             max-width: 600px;
             width: 100%;
             padding: 40px;
@@ -57,14 +58,14 @@
         .hero {
             text-align: center;
             margin-bottom: 34px;
-            border-bottom: 2px solid #f0d9ce;
+            border-bottom: 1px solid rgba(240, 217, 206, 0.2);
             padding-bottom: 24px;
         }
 
         .hero h1 {
             font-family: 'Cormorant Garamond', serif;
             font-size: 2.8rem;
-            color: #8b6f5e;
+            color: #f3d6c7;
             font-weight: 700;
             margin-bottom: 10px;
             letter-spacing: 1px;
@@ -85,43 +86,43 @@
         .hero .date {
             font-family: 'Cormorant Garamond', serif;
             font-size: 1.3rem;
-            color: #c9a884;
+            color: #d9b08c;
             font-weight: 600;
             margin-bottom: 10px;
         }
 
         .hero p {
             font-size: 1rem;
-            color: #888;
+            color: #c2b8b3;
             font-weight: 300;
             margin-bottom: 5px;
         }
 
         /* ===== QR Code Section ===== */
         .qr-section {
-            background: #faf8f3;
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 15px;
             padding: 25px;
             margin-bottom: 30px;
             text-align: center;
-            border: 2px solid #f0d9ce;
+            border: 1px solid rgba(212, 175, 159, 0.18);
         }
 
         .qr-section h3 {
             font-family: 'Cormorant Garamond', serif;
             font-size: 1.2rem;
-            color: #8b6f5e;
+            color: #f3d6c7;
             margin-bottom: 15px;
             font-weight: 600;
         }
 
         .qr-code-container {
-            background: white;
+            background: #f7f1ec;
             padding: 15px;
             border-radius: 10px;
             display: inline-block;
             margin-bottom: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
         }
 
         .qr-code-container img {
@@ -131,7 +132,7 @@
         }
 
         .download-qr-btn {
-            background: linear-gradient(135deg, #d4af9f 0%, #c9a884 100%);
+            background: linear-gradient(135deg, #ab7f67 0%, #8f6852 100%);
             color: white;
             border: none;
             padding: 10px 20px;
@@ -145,7 +146,7 @@
 
         .download-qr-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(212, 175, 159, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
         }
 
         .download-qr-btn:active {
@@ -156,35 +157,35 @@
         .upload-section h2 {
             font-family: 'Cormorant Garamond', serif;
             font-size: 1.8rem;
-            color: #8b6f5e;
+            color: #f3d6c7;
             margin-bottom: 20px;
             text-align: center;
             font-weight: 600;
         }
 
         .upload-zone {
-            border: 3px dashed #d4af9f;
+            border: 2px dashed rgba(212, 175, 159, 0.7);
             border-radius: 15px;
             padding: 50px 30px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: #fef9f5;
+            background: rgba(255, 255, 255, 0.035);
             margin-bottom: 20px;
             position: relative;
             overflow: hidden;
         }
 
         .upload-zone:hover {
-            border-color: #c9a884;
-            background: #faf8f3;
+            border-color: rgba(243, 214, 199, 0.9);
+            background: rgba(255, 255, 255, 0.055);
             transform: translateY(-2px);
         }
 
         .upload-zone.dragover {
-            border-color: #8b6f5e;
-            background: #f5ede4;
-            box-shadow: 0 10px 30px rgba(139, 111, 94, 0.15);
+            border-color: #f3d6c7;
+            background: rgba(171, 127, 103, 0.12);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
         }
 
         .upload-zone-icon {
@@ -202,13 +203,13 @@
         .upload-zone-text h3 {
             font-family: 'Cormorant Garamond', serif;
             font-size: 1.3rem;
-            color: #8b6f5e;
+            color: #f3d6c7;
             margin-bottom: 5px;
             font-weight: 600;
         }
 
         .upload-zone-text p {
-            color: #999;
+            color: #c7beb8;
             font-size: 0.95rem;
         }
 
@@ -225,16 +226,16 @@
             max-height: 300px;
             overflow-y: auto;
             padding: 15px;
-            background: #faf8f3;
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 10px;
-            border: 1px solid #f0d9ce;
+            border: 1px solid rgba(240, 217, 206, 0.15);
         }
 
         .file-item {
             position: relative;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
             animation: scaleIn 0.3s ease;
         }
 
@@ -313,7 +314,7 @@
 
         .progress-item-name {
             font-size: 0.9rem;
-            color: #3d3d3d;
+            color: #efe6e0;
             margin-bottom: 5px;
             display: flex;
             justify-content: space-between;
@@ -322,7 +323,7 @@
         .progress-item-bar {
             width: 100%;
             height: 6px;
-            background: #e8d9ce;
+            background: rgba(255, 255, 255, 0.08);
             border-radius: 10px;
             overflow: hidden;
             position: relative;
@@ -330,11 +331,11 @@
 
         .progress-item-fill {
             height: 100%;
-            background: linear-gradient(90deg, #d4af9f 0%, #c9a884 100%);
+            background: linear-gradient(90deg, #d9a98d 0%, #a06a4b 100%);
             border-radius: 10px;
             width: 0%;
             transition: width 0.2s ease;
-            box-shadow: 0 0 10px rgba(212, 175, 159, 0.5);
+            box-shadow: 0 0 10px rgba(171, 127, 103, 0.45);
         }
 
         /* ===== Buttons ===== */
@@ -358,14 +359,14 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #d4af9f 0%, #c9a884 100%);
+            background: linear-gradient(135deg, #b48468 0%, #8f6852 100%);
             color: white;
-            box-shadow: 0 5px 20px rgba(212, 175, 159, 0.3);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
         }
 
         .btn-primary:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(212, 175, 159, 0.4);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
         }
 
         .btn-primary:active:not(:disabled) {
@@ -378,13 +379,13 @@
         }
 
         .btn-secondary {
-            background: #f0d9ce;
-            color: #8b6f5e;
-            border: 2px solid #d4af9f;
+            background: rgba(255, 255, 255, 0.06);
+            color: #f3d6c7;
+            border: 1px solid rgba(243, 214, 199, 0.28);
         }
 
         .btn-secondary:hover:not(:disabled) {
-            background: #e8d0c4;
+            background: rgba(255, 255, 255, 0.1);
             transform: translateY(-2px);
         }
 
@@ -422,22 +423,22 @@
         .success-screen h2 {
             font-family: 'Cormorant Garamond', serif;
             font-size: 2rem;
-            color: #8b6f5e;
+            color: #f3d6c7;
             margin-bottom: 10px;
             font-weight: 700;
         }
 
         .success-screen p {
-            color: #888;
+            color: #c7beb8;
             margin-bottom: 30px;
             font-size: 1.05rem;
         }
 
         /* ===== Error Message ===== */
         .error-message {
-            background: #fdd7d7;
-            border-left: 4px solid #e74c3c;
-            color: #c0392b;
+            background: rgba(231, 76, 60, 0.14);
+            border-left: 4px solid #e27c74;
+            color: #ffd7d2;
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
@@ -462,9 +463,9 @@
 
         /* ===== Info Message ===== */
         .info-message {
-            background: #d4f1f9;
-            border-left: 4px solid #3498db;
-            color: #1e5a7a;
+            background: rgba(52, 152, 219, 0.14);
+            border-left: 4px solid #7cc0ef;
+            color: #d9efff;
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
@@ -481,7 +482,7 @@
             position: fixed;
             width: 10px;
             height: 10px;
-            background: #d4af9f;
+            background: #d9a98d;
             pointer-events: none;
             z-index: 9999;
         }
