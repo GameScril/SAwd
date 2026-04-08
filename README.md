@@ -5,7 +5,7 @@ Premium sajt za otpremanje fotografija sa venčanja, gde gosti mogu da šalju sl
 ## Funkcionalnosti
 
 - Romantičan, premium i responzivan UI u krem, blush i zlatnoj paleti
-- Jedinstven QR kod po sesiji za brzo deljenje
+- Dodatna print stranica sa QR kodom za deljenje
 - Otpremanje fotografija prevlačenjem i puštanjem
 - Trake napretka za svaki fajl
 - Animacija konfeta nakon uspešnog otpremanja
@@ -17,7 +17,8 @@ Premium sajt za otpremanje fotografija sa venčanja, gde gosti mogu da šalju sl
 ```
 wedding-photos/
 ├── public/
-│   └── index.html
+│   ├── index.html
+│   └── print.html
 ├── server.js
 ├── auth.js
 ├── .env
@@ -128,13 +129,18 @@ Otvorite:
 
 ## Kako radi
 
-### QR kod
+### QR kod za štampu
 
-- Pri učitavanju stranice frontend kreira UUID token sesije.
-- QR kod se generiše iz:
-  - `SITE_URL?session=UUID`
+- QR kod je sada samo na stranici `print.html`.
+- On vodi na glavnu upload stranicu:
+   - `SITE_URL/`
 - Koristi besplatan API:
-  - `https://api.qrserver.com/v1/create-qr-code/`
+   - `https://api.qrserver.com/v1/create-qr-code/`
+
+### Upload stranica
+
+- Upload stranica više ne prikazuje QR kod.
+- Služi samo za izbor i otpremanje fotografija.
 
 ### Tok otpremanja
 

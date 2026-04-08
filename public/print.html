@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR za venčanje</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #ffffff;
+            color: #111111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .print-card {
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .message {
+            font-size: 28px;
+            line-height: 1.45;
+            font-weight: 700;
+            margin-bottom: 28px;
+        }
+
+        .qr-frame {
+            display: inline-block;
+            padding: 18px;
+            border: 2px solid #111111;
+            border-radius: 18px;
+            background: #ffffff;
+        }
+
+        .qr-frame img {
+            display: block;
+            width: 420px;
+            height: 420px;
+            max-width: 80vw;
+            max-height: 80vw;
+        }
+
+        @media print {
+            body {
+                min-height: auto;
+                padding: 0;
+            }
+
+            .print-card {
+                max-width: none;
+            }
+
+            .small-note {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="print-card">
+        <div class="message">Dobrodosli na nase vencanje. Skenirajte QR kod kako bi uploadovali vase slike u nas album</div>
+        <div class="qr-frame">
+            <img id="qrCode" src="" alt="QR kod za otpremanje fotografija" />
+        </div>
+    </main>
+
+    <script>
+        let siteUrl = window.location.origin.replace(/\/$/, '');
+
+        async function loadRuntimeConfig() {
+            try {
+                const response = await fetch('/api/config');
+                if (!response.ok) {
+                    return;
+                }
+
+                const config = await response.json();
+                if (config.siteUrl) {
+                    siteUrl = config.siteUrl.replace(/\/$/, '');
+                }
+            } catch (error) {
+                siteUrl = window.location.origin.replace(/\/$/, '');
+            }
+        }
+
+        function generateQRCode() {
+            const qrUrl = `${siteUrl}/`;
+            const encodedUrl = encodeURIComponent(qrUrl);
+            const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=420x420&data=${encodedUrl}`;
+            document.getElementById('qrCode').src = qrApiUrl;
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadRuntimeConfig();
+            generateQRCode();
+        });
+    </script>
+</body>
+</html>
