@@ -19,7 +19,7 @@ async function loadRuntimeConfig() {
 function generateQRCode() {
     const qrUrl = `${siteUrl}/`;
     const encodedUrl = encodeURIComponent(qrUrl);
-    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=420x420&data=${encodedUrl}`;
+    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=320x320&data=${encodedUrl}`;
     document.getElementById('qrCode').src = qrApiUrl;
 }
 

@@ -23,102 +23,103 @@ body {
 
 .print-card {
     width: 100%;
-    max-width: 760px;
-    text-align: center;
-    background: rgba(24, 20, 28, 0.94);
-    border-radius: 24px;
-    padding: 44px 34px 38px;
+    max-width: 620px;
+    background: linear-gradient(180deg, rgba(24, 20, 28, 0.98), rgba(15, 12, 18, 0.96));
+    border-radius: 26px;
+    padding: 24px;
     box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
     border: 1px solid rgba(212, 175, 159, 0.14);
 }
 
+.poster {
+    background: #f6f4f0;
+    border: 1px solid rgba(131, 118, 106, 0.5);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+    color: #222;
+    padding: 34px 30px 28px;
+    border-radius: 8px;
+    text-align: center;
+}
+
 .icon {
-    width: 56px;
-    height: 56px;
-    margin: 0 auto 14px;
-    color: #f3d6c7;
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 6px;
+    color: #121212;
     opacity: 0.95;
 }
 
-.heading {
+.title-line {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.45rem;
-    letter-spacing: 0.4rem;
-    text-transform: uppercase;
-    color: #f2ece7;
+    font-size: clamp(2rem, 4.6vw, 3.25rem);
+    line-height: 0.95;
+    color: #2b2b2b;
     margin-bottom: 10px;
-    font-weight: 600;
+    font-weight: 400;
+    letter-spacing: 0.04em;
 }
 
-.brand-line {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2.2rem, 5vw, 3.8rem);
-    line-height: 1;
-    color: #f3d6c7;
-    margin-bottom: 18px;
-    font-weight: 700;
-}
-
-.brand-line .script {
+.title-line .script {
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     font-weight: 600;
-    color: #fff5ef;
+    color: #171717;
     letter-spacing: 0.02em;
 }
 
-.lead {
+.subtitle-line {
     font-family: 'Lato', sans-serif;
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     letter-spacing: 0.12rem;
     text-transform: uppercase;
-    color: #d9b08c;
-    margin-bottom: 28px;
+    color: #4a4a4a;
+    margin-bottom: 18px;
     font-weight: 400;
 }
 
 .qr-frame {
     display: inline-block;
-    padding: 18px;
-    border: 1px solid rgba(243, 214, 199, 0.18);
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.94);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+    padding: 10px;
+    background: transparent;
+    box-shadow: none;
 }
 
 .qr-frame img {
     display: block;
-    width: 420px;
-    height: 420px;
-    max-width: 80vw;
-    max-height: 80vw;
+    width: 300px;
+    height: 300px;
+    max-width: 70vw;
+    max-height: 70vw;
 }
 
-.footer-copy {
-    margin-top: 22px;
+.instruction-line {
+    margin-top: 14px;
     font-family: 'Lato', sans-serif;
-    font-size: 0.95rem;
-    line-height: 1.4;
-    color: #c2b8b3;
+    font-size: 0.92rem;
+    line-height: 1.35;
+    letter-spacing: 0.1rem;
     text-transform: uppercase;
-    letter-spacing: 0.09rem;
+    color: #4d4d4d;
+    font-weight: 400;
 }
 
 .names {
-    margin-top: 14px;
+    margin-top: 18px;
     font-family: 'Cormorant Garamond', serif;
     font-size: 1.55rem;
-    letter-spacing: 0.18rem;
-    color: #f3d6c7;
+    letter-spacing: 0.16rem;
+    color: #2b2b2b;
     text-transform: uppercase;
+    font-weight: 700;
 }
 
 .date {
-    margin-top: 8px;
+    margin-top: 4px;
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     letter-spacing: 0.16rem;
-    color: #d9b08c;
+    color: #2b2b2b;
+    text-transform: uppercase;
 }
 
 @media print {
@@ -137,10 +138,17 @@ body {
         padding: 0;
     }
 
-    .heading,
-    .brand-line,
-    .lead,
-    .footer-copy,
+    .poster {
+        box-shadow: none;
+        border: none;
+        background: white;
+        padding: 0;
+    }
+
+    .icon,
+    .title-line,
+    .subtitle-line,
+    .instruction-line,
     .names,
     .date {
         color: black;
@@ -149,16 +157,16 @@ body {
 
 @media (max-width: 768px) {
     .print-card {
-        padding: 34px 22px 30px;
+        padding: 18px;
     }
 
-    .heading {
-        font-size: 1.2rem;
+    .poster {
+        padding: 28px 20px 22px;
     }
 
     .qr-frame img {
-        width: 340px;
-        height: 340px;
+        width: 280px;
+        height: 280px;
     }
 }
 
@@ -168,38 +176,43 @@ body {
     }
 
     .print-card {
-        padding: 26px 16px 22px;
+        padding: 12px;
         border-radius: 20px;
     }
 
-    .heading {
-        font-size: 1rem;
-        letter-spacing: 0.28rem;
+    .poster {
+        padding: 22px 14px 18px;
     }
 
-    .brand-line {
-        font-size: 2.1rem;
+    .icon {
+        width: 50px;
+        height: 50px;
     }
 
-    .lead {
-        font-size: 0.9rem;
-        margin-bottom: 22px;
+    .title-line {
+        font-size: 1.95rem;
+    }
+
+    .subtitle-line,
+    .instruction-line {
+        font-size: 0.78rem;
+        letter-spacing: 0.08rem;
     }
 
     .qr-frame {
-        padding: 14px;
+        padding: 6px;
     }
 
     .qr-frame img {
-        width: 280px;
-        height: 280px;
+        width: 240px;
+        height: 240px;
     }
 
     .names {
-        font-size: 1.25rem;
+        font-size: 1.2rem;
     }
 
     .date {
-        font-size: 1.05rem;
+        font-size: 1rem;
     }
 }
