@@ -27,7 +27,7 @@ wedding-photos/
 
 ## Preduslovi
 
-- Node.js 14+
+- Node.js 24.x
 - Google nalog
 - Google Cloud projekat
 
