@@ -24,7 +24,7 @@ const SCOPES = [
     'https://www.googleapis.com/auth/photoslibrary.appendonly',
     'https://www.googleapis.com/auth/photoslibrary.sharing'
 ];
-const ALBUM_NAME = 'Slaviša & Ana Wedding';
+const ALBUM_NAME = 'Ana & Slaviša Wedding';
 const TOKEN_PATH = path.join(__dirname, '.env');
 
 /**
