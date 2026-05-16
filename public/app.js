@@ -89,13 +89,14 @@ function isSupportedImageFile(file) {
 }
 
 function handleFiles(files) {
+    const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20 MB
     const newFiles = Array.from(files).filter(file => {
         if (!isSupportedImageFile(file)) {
-            showError(`${file.name} nije slikovni fajl`);
+            showError(`"${file.name}" nije podržani slikovni fajl (JPG, PNG, WEBP, HEIC, HEIF)`);
             return false;
         }
-        if (file.size > 20 * 1024 * 1024) {
-            showError(`${file.name} je veći od 20 MB`);
+        if (file.size > MAX_FILE_SIZE) {
+            showError(`"${file.name}" premašuje dozvoljenih 20 MB i neće biti dodat`);
             return false;
         }
         return true;
@@ -237,10 +238,93 @@ async function uploadFiles() {
     }
 }
 
-function uploadSingleFile(file, tracker) {
+// ===== Client-side Image Compression =====
+// Compresses images above 4 MB before upload, providing a safe margin below
+// Vercel's ~4.5 MB serverless body limit.
+// HEIC/HEIF files are skipped (server handles conversion via sharp).
+async function compressImage(file) {
+    const MAX_UPLOAD_SIZE = 4 * 1024 * 1024; // 4 MB – safe margin below Vercel's 4.5 MB limit
+    const MAX_DIMENSION = 4096;
+    const JPEG_QUALITY = 0.85;
+
+    if (file.size <= MAX_UPLOAD_SIZE) {
+        return file;
+    }
+
+    const lowerName = (file.name || '').toLowerCase();
+    if (
+        file.type === 'image/heic' || file.type === 'image/heif' ||
+        lowerName.endsWith('.heic') || lowerName.endsWith('.heif')
+    ) {
+        // Browser cannot decode HEIC; let the server handle it
+        return file;
+    }
+
+    return new Promise((resolve) => {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+
+        img.onload = () => {
+            URL.revokeObjectURL(url);
+
+            let { width, height } = img;
+            if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
+                if (width >= height) {
+                    height = Math.round(height * MAX_DIMENSION / width);
+                    width = MAX_DIMENSION;
+                } else {
+                    width = Math.round(width * MAX_DIMENSION / height);
+                    height = MAX_DIMENSION;
+                }
+            }
+
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+
+            // Build a safe output filename regardless of dots in the original name
+            const lastDot = file.name.lastIndexOf('.');
+            const baseName = lastDot > 0 ? file.name.substring(0, lastDot) : file.name;
+            const compressedName = baseName + '.jpg';
+
+            canvas.toBlob(
+                (blob) => {
+                    if (blob) {
+                        const compressed = new File(
+                            [blob],
+                            compressedName,
+                            { type: 'image/jpeg', lastModified: Date.now() }
+                        );
+                        // Prefer compressed when it fits within the upload limit
+                        // or when it is at least smaller than the original
+                        if (blob.size <= MAX_UPLOAD_SIZE || blob.size < file.size) {
+                            resolve(compressed);
+                            return;
+                        }
+                    }
+                    resolve(file);
+                },
+                'image/jpeg',
+                JPEG_QUALITY
+            );
+        };
+
+        img.onerror = () => {
+            URL.revokeObjectURL(url);
+            resolve(file);
+        };
+
+        img.src = url;
+    });
+}
+
+async function uploadSingleFile(file, tracker) {
+    const fileToUpload = await compressImage(file);
+
     return new Promise((resolve) => {
         const formData = new FormData();
-        formData.append('photos', file);
+        formData.append('photos', fileToUpload);
 
         const xhr = new XMLHttpRequest();
 
@@ -267,6 +351,17 @@ function uploadSingleFile(file, tracker) {
                     success: true,
                     uploaded: response.uploaded || 1,
                     failed: 0
+                });
+                return;
+            }
+
+            if (xhr.status === 413) {
+                updateProgressBar(tracker.index, 0);
+                resolve({
+                    success: false,
+                    uploaded: 0,
+                    failed: 1,
+                    message: 'Fajl je prevelik za otpremanje. Pokušajte sa manjom fotografijom.'
                 });
                 return;
             }
