@@ -223,6 +223,11 @@ Ovaj projekat je podešen za Vercel sa fajlovima:
 - Proverite veličinu fajlova, maksimum je 20 MB po fajlu
 - Proverite da su fajlovi slike (JPG, PNG, WEBP, GIF)
 
+### „function_payload_too_large”
+
+- Aplikacija sada šalje fotografije jednu po jednu, ne sve odjednom
+- Ako greška i dalje postoji, pokušajte sa manjim fajlovima (serverless platforme često imaju stroga ograničenja po zahtevu)
+
 ### „Album not created”
 
 - Proverite da je Photos Library API uključen

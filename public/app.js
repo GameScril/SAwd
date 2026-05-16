@@ -1,6 +1,7 @@
 // ===== State Management =====
 let selectedFiles = [];
 let siteUrl = window.location.origin;
+const MAX_DISPLAYED_FAILURES = 2;
 
 // ===== Initialize on Page Load =====
 document.addEventListener('DOMContentLoaded', async function() {
@@ -175,12 +176,6 @@ async function uploadFiles() {
     progressContainer.classList.add('active');
     progressContainer.innerHTML = '';
 
-    // Kreiranje FormData
-    const formData = new FormData();
-    selectedFiles.forEach(file => {
-        formData.append('photos', file);
-    });
-
     // Kreiranje pratilaca napretka
     const progressTrackers = selectedFiles.map((file, index) => ({
         index,
@@ -193,53 +188,111 @@ async function uploadFiles() {
     renderProgressBars(progressTrackers);
 
     try {
-        // Otpremanje uz praćenje napretka
-        const xhr = new XMLHttpRequest();
+        let uploadedTotal = 0;
+        let failedTotal = 0;
+        const failedMessages = [];
 
-        xhr.upload.addEventListener('progress', (e) => {
-            if (e.lengthComputable) {
-                const percentComplete = (e.loaded / e.total) * 100;
-                updateProgressBars(percentComplete, progressTrackers);
-            }
-        });
+        for (const tracker of progressTrackers) {
+            const file = selectedFiles[tracker.index];
+            const result = await uploadSingleFile(file, tracker);
 
-        xhr.addEventListener('load', () => {
-            if (xhr.status === 200 || xhr.status === 201) {
-                const response = JSON.parse(xhr.responseText);
-                
-                if (response.success) {
-                    showSuccess(`${response.uploaded} fotografija je uspešno otpremljeno!`);
-                    setTimeout(() => {
-                        showSuccessScreen();
-                        clearFiles();
-                        uploadBtn.disabled = false;
-                    }, 500);
-                } else {
-                    showError(response.message || 'Otpremanje nije uspelo');
-                    uploadBtn.disabled = false;
-                    progressContainer.classList.remove('active');
-                }
+            if (result.success) {
+                uploadedTotal += result.uploaded;
             } else {
-                showError('Otpremanje nije uspelo. Pokušajte ponovo.');
-                uploadBtn.disabled = false;
-                progressContainer.classList.remove('active');
+                failedTotal += result.failed;
+                if (result.message) {
+                    failedMessages.push(`${file.name}: ${result.message}`);
+                }
             }
-        });
+        }
 
-        xhr.addEventListener('error', () => {
-            showError('Greška u mreži tokom otpremanja');
-            uploadBtn.disabled = false;
-            progressContainer.classList.remove('active');
-        });
+        if (uploadedTotal > 0) {
+            const summary = failedTotal > 0
+                ? `${uploadedTotal} fotografija uspešno otpremljeno, ${failedTotal} nije uspelo.`
+                : `${uploadedTotal} fotografija je uspešno otpremljeno!`;
 
-        xhr.open('POST', '/api/upload');
-        xhr.send(formData);
+            showSuccess(summary);
+            if (failedMessages.length > 0) {
+                showError(`Neuspešni fajlovi: ${failedMessages.slice(0, MAX_DISPLAYED_FAILURES).join(' | ')}`);
+            }
+            setTimeout(() => {
+                showSuccessScreen();
+                clearFiles();
+                uploadBtn.disabled = false;
+            }, 500);
+            return;
+        }
+
+        const details = failedMessages.length > 0
+            ? ` ${failedMessages.slice(0, MAX_DISPLAYED_FAILURES).join(' | ')}`
+            : '';
+        showError(`Otpremanje nije uspelo za ${failedTotal} fajl(a).${details}`);
+        uploadBtn.disabled = false;
+        progressContainer.classList.remove('active');
 
     } catch (error) {
         showError(`Otpremanje nije uspelo: ${error.message}`);
         uploadBtn.disabled = false;
         progressContainer.classList.remove('active');
     }
+}
+
+function uploadSingleFile(file, tracker) {
+    return new Promise((resolve) => {
+        const formData = new FormData();
+        formData.append('photos', file);
+
+        const xhr = new XMLHttpRequest();
+
+        xhr.upload.addEventListener('progress', (e) => {
+            if (!e.lengthComputable) {
+                return;
+            }
+
+            const percentComplete = (e.loaded / e.total) * 100;
+            updateProgressBar(tracker.index, percentComplete);
+        });
+
+        xhr.addEventListener('load', () => {
+            let response = null;
+            try {
+                response = JSON.parse(xhr.responseText);
+            } catch (error) {
+                response = null;
+            }
+
+            if ((xhr.status === 200 || xhr.status === 201) && response?.success) {
+                updateProgressBar(tracker.index, 100);
+                resolve({
+                    success: true,
+                    uploaded: response.uploaded || 1,
+                    failed: 0
+                });
+                return;
+            }
+
+            updateProgressBar(tracker.index, 0);
+            resolve({
+                success: false,
+                uploaded: 0,
+                failed: 1,
+                message: response?.message || 'Otpremanje nije uspelo'
+            });
+        });
+
+        xhr.addEventListener('error', () => {
+            updateProgressBar(tracker.index, 0);
+            resolve({
+                success: false,
+                uploaded: 0,
+                failed: 1,
+                message: 'Greška u mreži tokom otpremanja'
+            });
+        });
+
+        xhr.open('POST', '/api/upload');
+        xhr.send(formData);
+    });
 }
 
 // ===== Render Progress Bars =====
@@ -261,14 +314,20 @@ function renderProgressBars(trackers) {
 // ===== Update Progress Bars =====
 function updateProgressBars(percentComplete, trackers) {
     trackers.forEach((tracker, index) => {
-        const fillEl = document.getElementById(`progress-fill-${tracker.index}`);
-        const percentEl = document.getElementById(`progress-percent-${tracker.index}`);
-        
-        if (fillEl) {
-            fillEl.style.width = percentComplete + '%';
-            percentEl.textContent = Math.round(percentComplete) + '%';
-        }
+        updateProgressBar(tracker.index, percentComplete);
     });
+}
+
+function updateProgressBar(index, percentComplete) {
+    const fillEl = document.getElementById(`progress-fill-${index}`);
+    const percentEl = document.getElementById(`progress-percent-${index}`);
+
+    if (!fillEl || !percentEl) {
+        return;
+    }
+
+    fillEl.style.width = percentComplete + '%';
+    percentEl.textContent = Math.round(percentComplete) + '%';
 }
 
 // ===== Show Error Message =====
